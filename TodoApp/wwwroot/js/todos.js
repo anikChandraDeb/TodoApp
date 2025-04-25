@@ -183,6 +183,23 @@ const deleteTodo = async (id) => {
     }
 };
 
+const searchTodos = async (e) => {
+    e.preventDefault();
+    const searchTerm = document.getElementById("search").value;
+    try {
+        const response = await fetch(`https://localhost:5217/api/todos/search?query=${searchTerm}`, {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error("Failed to fetch todos");
+        const todos = await response.json();
+        allTodos = todos;
+        renderTodos();
+    } catch (error) {
+        console.error("Error searching todos:", error);
+    }
+};
+
 // Open Edit Modal with Todo Info
 const openEditModal = async (id) => {
     try {
